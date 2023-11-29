@@ -76,8 +76,6 @@ def draw_board(board):
 
         if color:
             pygame.gfxdraw.filled_circle(screen, x, y, RADIUS, color)
-            # Reflection highlight for discs
-            #pygame.gfxdraw.filled_circle(screen, x - RADIUS // 3, y - RADIUS // 3, RADIUS // 3, (255, 255, 255, 0))
 
         pygame.gfxdraw.aacircle(screen, x, y, RADIUS, colors["DARKGREY"])
 

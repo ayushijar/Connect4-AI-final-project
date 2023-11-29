@@ -47,12 +47,3 @@ class Button:
         if self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height:
             return True
 
-#pygame.mixer.init()
-
-#script_dir = os.path.dirname(os.path.realpath(__file__))
-#sound_path = os.path.join(script_dir, '../assets/sound')
-
-#ai_move_sound = pygame.mixer.Sound(os.path.join(sound_path, 'AI_sound.ogg'))
-#self_move_sound = pygame.mixer.Sound(os.path.join(sound_path,'self_sound.ogg'))
-#ai_wins_sound = pygame.mixer.Sound(os.path.join(sound_path,"looser.ogg"))
-#player_wins_sound = pygame.mixer.Sound(os.path.join(sound_path,"winner.ogg"))
