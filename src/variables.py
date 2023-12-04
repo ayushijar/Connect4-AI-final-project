@@ -13,7 +13,7 @@ RADIUS = int(SQUARESIZE / 2 - 5)
 
 # Dictionary for colors
 colors = {
-    "DARKGREY": (13, 13, 13),
+    "DARKGREY": (0, 0, 0),
     "GREEN": (154, 217, 61),
     "YELLOW": (240, 234, 0),
     "RED": (238, 45, 0),
@@ -31,9 +31,6 @@ AI_PIECE = 2
 
 WINDOW_LENGTH = 4
 EMPTY = 0
-
-# Time for AI to wait before moving
-thinking_time = 0
 
 # Height of buttons
 level_button_height = 60

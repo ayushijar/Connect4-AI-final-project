@@ -14,18 +14,18 @@ def is_terminal_node(board):
     return game_over_check(board, PLAYER_PIECE) or game_over_check(board, AI_PIECE) or len(get_valid_locations(board)) == 0
 
 # Implimenting minimax algorithm
-def minimax(board, depth, alpha, beta, maximizing_player):
+def minimax(board, depth, alpha, beta, maximizing_player, no_of_nodes_explored, pruned_nodes):
     valid_locations = get_valid_locations(board)
 
     if isTerminal := is_terminal_node(board):
         if game_over_check(board, AI_PIECE):
-            return (None, math.inf)
+            return (None, math.inf, no_of_nodes_explored, pruned_nodes)
         elif game_over_check(board, PLAYER_PIECE):
-            return (None, -math.inf)
+            return (None, -math.inf, no_of_nodes_explored, pruned_nodes)
         else: 
-            return (None, 0)
+            return (None, 0, no_of_nodes_explored, pruned_nodes)
     elif depth == 0:
-        return (None, score_position(board, AI_PIECE))
+        return (None, score_position(board, AI_PIECE), no_of_nodes_explored, pruned_nodes)
 
     if maximizing_player:
         value = -math.inf
@@ -35,7 +35,8 @@ def minimax(board, depth, alpha, beta, maximizing_player):
             r = get_next_open_row(board, c)
             temp_board = board.copy()
             drop_piece(temp_board, r, c, AI_PIECE)
-            new_score = minimax(temp_board, depth - 1, alpha, beta, False)[1]
+            no_of_nodes_explored+=1
+            new_score = minimax(temp_board, depth - 1, alpha, beta, False,no_of_nodes_explored, pruned_nodes)[1]
 
             if new_score > value:
                 value = new_score
@@ -44,6 +45,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
             alpha = max(alpha, value)
 
             if alpha >= beta:
+                pruned_nodes += 1
                 break
 
     # Minimizing player
@@ -55,7 +57,8 @@ def minimax(board, depth, alpha, beta, maximizing_player):
             r = get_next_open_row(board, c)
             temp_board = board.copy()
             drop_piece(temp_board, r, c, PLAYER_PIECE)
-            new_score = minimax(temp_board, depth - 1, alpha, beta, True)[1]
+            no_of_nodes_explored+=1
+            new_score = minimax(temp_board, depth - 1, alpha, beta, True,no_of_nodes_explored,pruned_nodes)[1]
 
             if new_score < value:
                 value = new_score
@@ -64,6 +67,6 @@ def minimax(board, depth, alpha, beta, maximizing_player):
             beta = min(beta, value)
 
             if alpha >= beta:
-                break
-            
-    return column, value
+                pruned_nodes += 1
+                break       
+    return column, value, no_of_nodes_explored, pruned_nodes

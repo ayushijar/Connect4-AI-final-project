@@ -52,6 +52,8 @@ def game_over_check(board, piece):
         if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
             return True
 
+    return False
+
 # Setting screen size
 screen = pygame.display.set_mode(size)
 
@@ -64,7 +66,7 @@ def draw_board(board):
 
         # Gradient shading for holes
         for offset in range(RADIUS):
-            pygame.gfxdraw.filled_circle(screen, x, y, RADIUS - offset, colors["DARKGREY"])
+            pygame.gfxdraw.filled_circle(screen, x, y, RADIUS - offset, (40 + offset, 40 + offset, 40 + offset))
 
     for c, r in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT)):
         x, y = (int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2))
@@ -76,6 +78,8 @@ def draw_board(board):
 
         if color:
             pygame.gfxdraw.filled_circle(screen, x, y, RADIUS, color)
+            # Reflection highlight for discs
+            #pygame.gfxdraw.filled_circle(screen, x - RADIUS // 3, y - RADIUS // 3, RADIUS // 3, (255, 255, 255, 100))
 
         pygame.gfxdraw.aacircle(screen, x, y, RADIUS, colors["DARKGREY"])
 
