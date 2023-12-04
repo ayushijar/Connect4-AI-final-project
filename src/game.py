@@ -5,15 +5,13 @@ import random
 import time
 
 from enum import Enum
-from variables import ROW_COUNT, COLUMN_COUNT, SQUARESIZE, size, RADIUS, colors, height, width, PLAYER, AI, \
-    PLAYER_PIECE, AI_PIECE,game_end_button_width, game_end_button_height, level_button_height, \
-    level_button_width
+from variables import ROW_COUNT, COLUMN_COUNT, SQUARESIZE, RADIUS, colors, height, width, PLAYER, AI, \
+    PLAYER_PIECE, AI_PIECE,game_end_button_width, game_end_button_height
 from functions import create_board, is_valid_location, get_next_open_row, drop_piece, game_over_check, draw_board, \
     board, screen, draw_dotted_circle
 from score_ai import score_position
 from minmax_ai import minimax
 from ui_components import Button
-#from ui_components import ai_move_sound, self_move_sound, ai_wins_sound, player_wins_sound
 
 class Difficulty(Enum):
     EASY = 1
@@ -25,7 +23,6 @@ class Difficulty(Enum):
 class ConnectFour:
     def __init__(self):
         pygame.init()
-        pygame.mixer.init() #added to initialize sound
         self.game_over = False
         self.turn = random.randint(PLAYER, AI)
         self.board = create_board()
@@ -58,7 +55,6 @@ class ConnectFour:
         if self.turn == PLAYER:
             col = int(math.floor(posx / SQUARESIZE))
             if is_valid_location(self.board, col):
-                #self_move_sound.play()
                 self._extracted_from_ai_move_7(col, PLAYER_PIECE, "You win!! ^_^")
                 self.turn ^= 1
                 self.render_thinking("Thinking...")
@@ -88,7 +84,6 @@ class ConnectFour:
         print("Winning factor for AI", minimaxScore)
         print("\n")
         if is_valid_location(self.board, col):
-            #ai_move_sound.play()
             self._extracted_from_ai_move_7(col, AI_PIECE, "AI wins!! :[")
             self.turn ^= 1
 
@@ -107,11 +102,9 @@ class ConnectFour:
         if message == "AI wins!! :[":
             print("AI wins!! :[")
             print("AI Score:", score_position(board,AI_PIECE))
-            #ai_wins_sound.play()
         elif message == "You win!! ^_^":
             print("You win!! ^_^")
             print("Your Score:", score_position(board,PLAYER_PIECE))
-            #player_wins_sound.play()
         label = self.myfont.render(message, 1, colors["DARKGREY"])
         screen.blit(label, (40, 10))
         pygame.display.update()
@@ -218,6 +211,3 @@ class ConnectFour:
 if __name__ == "__main__":
     game = ConnectFour()
     game.game_start()
-
-
-# TODO Complete the game and make a downloadable file for the game. Use pybag to take the game to the web.
