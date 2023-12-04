@@ -7,13 +7,13 @@ import time
 from enum import Enum
 from variables import ROW_COUNT, COLUMN_COUNT, SQUARESIZE, RADIUS, colors, height, width, PLAYER, AI, \
     PLAYER_PIECE, AI_PIECE,game_end_button_width, game_end_button_height
-from functions import create_board, is_valid_location, get_next_open_row, drop_piece, game_over_check, draw_board, \
+from functions import create_connect4_board, check_valid_location, find_next_available_row, drop_piece, check_game_over, draw_connect4_board, \
     board, screen, draw_dotted_circle
 from score_ai import score_position
 from minmax_ai import minimax
 from ui_components import Button
 
-class Difficulty(Enum):
+class DifficultyLevel(Enum):
     EASY = 1
     MEDIUM = 2
     DIFFICULT = 3
@@ -25,7 +25,7 @@ class ConnectFour:
         pygame.init()
         self.game_over = False
         self.turn = random.randint(PLAYER, AI)
-        self.board = create_board()
+        self.gameBoard = create_connect4_board()
         self.myfont = pygame.font.SysFont("monospace", 80)
         padding = 20
         restart_button_y = height // 2
@@ -37,66 +37,67 @@ class ConnectFour:
                                      game_end_button_width, game_end_button_height,
                                      'Restart')
         pygame.display.set_caption("Connect Four")
-        self.difficulty = self.choose_difficulty()
+        self.difficulty_level = self.choose_difficulty_level()
         screen.fill(colors["DARKGREY"])
-        draw_board(self.board)
+        draw_connect4_board(self.gameBoard)
         pygame.display.update()
 
     def handle_mouse_motion(self, event):
         pygame.draw.rect(screen, colors["DARKGREY"], (0, 0, width, SQUARESIZE))
-        posx = event.pos[0]
+        position_x = event.pos[0]
         if self.turn == PLAYER:
-            draw_dotted_circle(screen, posx, int(SQUARESIZE / 2), RADIUS, colors["YELLOW"], gap_length=6)
+            draw_dotted_circle(screen, position_x, int(SQUARESIZE / 2), RADIUS, colors["YELLOW"], gap_length=6)
         pygame.display.update()
 
+    # player  move
     def handle_mouse_button_down(self, event):
         pygame.draw.rect(screen, colors["DARKGREY"], (0, 0, width, SQUARESIZE))
-        posx = event.pos[0]
+        position_x = event.pos[0]
         if self.turn == PLAYER:
-            col = int(math.floor(posx / SQUARESIZE))
-            if is_valid_location(self.board, col):
-                self._extracted_from_ai_move_7(col, PLAYER_PIECE, "You win!! ^_^")
+            column = int(math.floor(position_x / SQUARESIZE))
+            if check_valid_location(self.gameBoard, column):
+                self.update_game_board(column, PLAYER_PIECE, "You win!! ^_^")
                 self.turn ^= 1
-                self.render_thinking("Thinking...")
-                draw_board(self.board)
+                self.render_thinking_message("Thinking...")
+                draw_connect4_board(self.gameBoard)
         if self.game_over:
-            if self.quit_button.is_over((posx, event.pos[1])):
+            if self.quit_button.is_over((position_x, event.pos[1])):
                 sys.exit()
-            elif self.restart_button.is_over((posx, event.pos[1])):
+            elif self.restart_button.is_over((position_x, event.pos[1])):
                 self.__init__()
 
 
+    #AI move
     def ai_move(self):
-        if self.difficulty == Difficulty.EASY:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.board, 2, -math.inf, math.inf, True, 0, 0)
-        if self.difficulty == Difficulty.MEDIUM:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.board, 3, -math.inf, math.inf, True, 0, 0)
-        if self.difficulty == Difficulty.DIFFICULT:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.board, 4, -math.inf, math.inf, True, 0, 0)
-        if self.difficulty == Difficulty.CHALLENGING:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.board, 6, -math.inf, math.inf, True, 0, 0)
-        if self.difficulty == Difficulty.UNBEATABLE:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.board, 7, -math.inf, math.inf, True, 0, 0)
+        if self.difficulty_level == DifficultyLevel.EASY:
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 2, -math.inf, math.inf, True, 0, 0)
+        if self.difficulty_level == DifficultyLevel.MEDIUM:
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 3, -math.inf, math.inf, True, 0, 0)
+        if self.difficulty_level == DifficultyLevel.DIFFICULT:
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 4, -math.inf, math.inf, True, 0, 0)
+        if self.difficulty_level == DifficultyLevel.CHALLENGING:
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 6, -math.inf, math.inf, True, 0, 0)
+        if self.difficulty_level == DifficultyLevel.UNBEATABLE:
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 7, -math.inf, math.inf, True, 0, 0)
         print("\n")
         print("No of explored nodes",no_of_nodes_explored)
         print("No of pruned nodes", pruned_nodes)
         print("Column",col+1) 
         print("Winning factor for AI", minimaxScore)
         print("\n")
-        if is_valid_location(self.board, col):
-            self._extracted_from_ai_move_7(col, AI_PIECE, "AI wins!! :[")
+        if check_valid_location(self.gameBoard, col):
+            self.update_game_board(col, AI_PIECE, "AI wins!! :[")
             self.turn ^= 1
 
-    # TODO Rename this here and in `handle_mouse_button_down` and `ai_move`
-    def _extracted_from_ai_move_7(self, col, arg1, arg2):
-        row = get_next_open_row(self.board, col)
-        drop_piece(self.board, row, col, arg1)
-        draw_board(self.board)
+    def update_game_board(self, col, arg1, arg2):
+        row = find_next_available_row(self.gameBoard, col)
+        drop_piece(self.gameBoard, row, col, arg1)
+        draw_connect4_board(self.gameBoard)
         pygame.display.update()
-        if game_over_check(self.board, arg1):
-            self.display_winner(self.board, arg2)
+        if check_game_over(self.gameBoard, arg1):
+            self.display_winner(self.gameBoard, arg2)
             self.game_over = True
-            return self.handle_game_over()
+            return self.handle_game_over_check()
 
     def display_winner(self,board, message):
         if message == "AI wins!! :[":
@@ -109,9 +110,9 @@ class ConnectFour:
         screen.blit(label, (40, 10))
         pygame.display.update()
 
-    def handle_game_over(self):
+    def handle_game_over_check(self):
         self.clear_label()
-        draw_board(self.board)
+        draw_connect4_board(self.gameBoard)
         self.quit_button.draw(screen, outline_color=colors["DARKGREY"])
         self.restart_button.draw(screen, outline_color=colors["DARKGREY"])
         pygame.display.update()
@@ -120,17 +121,17 @@ class ConnectFour:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    posx, posy = event.pos
-                    if self.quit_button.is_over((posx, posy)):
+                    position_x, position_y = event.pos
+                    if self.quit_button.is_over((position_x, position_y)):
                         sys.exit()
-                    elif self.restart_button.is_over((posx, posy)):
+                    elif self.restart_button.is_over((position_x, position_y)):
                         self.__init__()
-                        return self.game_start()
+                        return self.start_game()
 
             pygame.display.update()
 
 
-    def choose_difficulty(self):
+    def choose_difficulty_level(self):
         btn_height = 90
         text_color = colors['DARKGREY']
         btn_y = [i * (btn_height + 20) + height/1.8 for i in range(-3,3)]
@@ -169,20 +170,20 @@ class ConnectFour:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    posx, posy = event.pos
-                    if self.easy.is_over((posx, posy)):
-                        return Difficulty.EASY
-                    elif self.MEDIUM.is_over((posx, posy)):
-                        return Difficulty.MEDIUM
-                    elif self.DIFFICULT.is_over((posx, posy)):
-                        return Difficulty.DIFFICULT
-                    elif self.CHALLENGING.is_over((posx, posy)):
-                        return Difficulty.CHALLENGING
-                    elif self.UNBEATABLE.is_over((posx, posy)):
-                        return Difficulty.UNBEATABLE
+                    position_x, position_y = event.pos
+                    if self.easy.is_over((position_x, position_y)):
+                        return DifficultyLevel.EASY
+                    elif self.MEDIUM.is_over((position_x, position_y)):
+                        return DifficultyLevel.MEDIUM
+                    elif self.DIFFICULT.is_over((position_x, position_y)):
+                        return DifficultyLevel.DIFFICULT
+                    elif self.CHALLENGING.is_over((position_x, position_y)):
+                        return DifficultyLevel.CHALLENGING
+                    elif self.UNBEATABLE.is_over((position_x, position_y)):
+                        return DifficultyLevel.UNBEATABLE
 
 
-    def game_start(self):
+    def start_game(self):
         while not self.game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -194,7 +195,7 @@ class ConnectFour:
             if self.turn == AI and not self.game_over:
                 self.ai_move()
             if self.game_over:
-                self.handle_game_over()
+                self.handle_game_over_check()
 
             pygame.display.update()
 
@@ -202,7 +203,7 @@ class ConnectFour:
         pygame.draw.rect(screen, colors["DARKGREY"], (0, 0, width, SQUARESIZE))
 
 
-    def render_thinking(self, text):
+    def render_thinking_message(self, text):
         self.clear_label()
         label = pygame.font.SysFont("monospace", 60).render(text, 1, colors["YELLOW"])
         screen.blit(label, (40, 10))
@@ -210,4 +211,4 @@ class ConnectFour:
 
 if __name__ == "__main__":
     game = ConnectFour()
-    game.game_start()
+    game.start_game()

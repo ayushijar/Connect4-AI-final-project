@@ -8,48 +8,48 @@ import math
 from pygame import gfxdraw
 from variables import ROW_COUNT, COLUMN_COUNT, size, colors, SQUARESIZE, RADIUS, height, width, PLAYER_PIECE, AI_PIECE
 
-# Creating board
-def create_board():
+# Creating game board
+def create_connect4_board():
     return np.zeros((ROW_COUNT,COLUMN_COUNT))
 
 # Creating the board
-board = create_board()
+board = create_connect4_board()
 
 # Checking if the top row of a selected column is empty or not
-def is_valid_location(board, col):
-    return board[ROW_COUNT-1][col] == 0
+def check_valid_location(board, column):
+    return board[ROW_COUNT-1][column] == 0
 
 # Getting the lowest empty slot of the selected column
-def get_next_open_row(board, col):
+def find_next_available_row(board, column):
     for slot in range(ROW_COUNT):
-        if board[slot][col] == 0:
+        if board[slot][column] == 0:
             return slot
 
 # Dropping the piece in the board
-def drop_piece(board, row, col, piece):
-    board[row][col] = piece
+def drop_piece(board, row, column, piece):
+    board[row][column] = piece
 
 # Checking if the game is over
-def game_over_check(board, piece):
+def check_game_over(board, piece):
 
-    # Checking horizontal win
-    for c, r in itertools.product(range(COLUMN_COUNT - 3), range(ROW_COUNT)):
-        if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
+    # Checking horizontal row
+    for col, row in itertools.product(range(COLUMN_COUNT - 3), range(ROW_COUNT)):
+        if board[row][col] == piece and board[row][col+1] == piece and board[row][col+2] == piece and board[row][col+3] == piece:
             return True
 
-    # Checking vertical win
-    for c, r in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT - 3)):
-        if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
+    # Checking vertical row
+    for col, row in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT - 3)):
+        if board[row][col] == piece and board[row+1][col] == piece and board[row+2][col] == piece and board[row+3][col] == piece:
             return True
 
-    # Checking positive slop diagonal win
-    for c, r in itertools.product(range(COLUMN_COUNT - 3), range(ROW_COUNT - 3)):
-        if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
+    # Checking positive slop diagonal row
+    for col, row in itertools.product(range(COLUMN_COUNT - 3), range(ROW_COUNT - 3)):
+        if board[row][col] == piece and board[row+1][col+1] == piece and board[row+2][col+2] == piece and board[row+3][col+3] == piece:
             return True
 
-    # Checking negative slop diagonal win
-    for c, r in itertools.product(range(COLUMN_COUNT - 3), range(3, ROW_COUNT)):
-        if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+    # Checking negative slop diagonal row
+    for col, row in itertools.product(range(COLUMN_COUNT - 3), range(3, ROW_COUNT)):
+        if board[row][col] == piece and board[row-1][col+1] == piece and board[row-2][col+2] == piece and board[row-3][col+3] == piece:
             return True
 
     return False
@@ -58,22 +58,22 @@ def game_over_check(board, piece):
 screen = pygame.display.set_mode(size)
 
 # Drawing board graphics
-def draw_board(board):
-    for c, r in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT)):
-        rect_pos = (c * SQUARESIZE, r * SQUARESIZE + SQUARESIZE, SQUARESIZE, SQUARESIZE)
+def draw_connect4_board(board):
+    for col, row in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT)):
+        rect_pos = (col * SQUARESIZE, row * SQUARESIZE + SQUARESIZE, SQUARESIZE, SQUARESIZE)
         pygame.gfxdraw.box(screen, rect_pos, colors["BLUE"])
-        x, y = (int(c * SQUARESIZE + SQUARESIZE / 2), int(r * SQUARESIZE + SQUARESIZE + SQUARESIZE / 2))
+        x, y = (int(col * SQUARESIZE + SQUARESIZE / 2), int(row * SQUARESIZE + SQUARESIZE + SQUARESIZE / 2))
 
         # Gradient shading for holes
         for offset in range(RADIUS):
             pygame.gfxdraw.filled_circle(screen, x, y, RADIUS - offset, (40 + offset, 40 + offset, 40 + offset))
 
-    for c, r in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT)):
-        x, y = (int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2))
+    for col, row in itertools.product(range(COLUMN_COUNT), range(ROW_COUNT)):
+        x, y = (int(col * SQUARESIZE + SQUARESIZE / 2), height - int(row * SQUARESIZE + SQUARESIZE / 2))
         color = None
-        if board[r][c] == PLAYER_PIECE:
+        if board[row][col] == PLAYER_PIECE:
             color = colors["YELLOW"]
-        elif board[r][c] == AI_PIECE:
+        elif board[row][col] == AI_PIECE:
             color = colors["RED"]
 
         if color:
@@ -85,7 +85,7 @@ def draw_board(board):
 
 
 def get_valid_locations(board):
-    return [c for c in range(COLUMN_COUNT) if is_valid_location(board, c)]
+    return [col for col in range(COLUMN_COUNT) if check_valid_location(board, col)]
 
 def draw_dotted_circle(surface, x, y, radius, color, dot_length=4, gap_length=4, line_width=3):
     num_dots = int(2 * math.pi * radius / (dot_length + gap_length))

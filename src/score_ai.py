@@ -2,7 +2,7 @@ import itertools
 import random
 
 from variables import ROW_COUNT, COLUMN_COUNT, PLAYER_PIECE, AI_PIECE, WINDOW_LENGTH, EMPTY
-from functions import get_valid_locations, get_next_open_row, drop_piece
+from functions import get_valid_locations, find_next_available_row, drop_piece
 
 # Evaluating scores of connections
 def evaluate_window(window, piece):
@@ -27,61 +27,61 @@ def evaluate_window(window, piece):
     return score
 
 # Getting scores for connections
-def score_position(board, piece, directions=(1, 1, 1, 1)):
+def score_position(game_board, piece, directions=(1, 1, 1, 1)):
 
     score = 0
 
-    # Prefer center column for increased probablity of win
-    centerArray = [int(i) for i in list(board[ : , COLUMN_COUNT//2])]
+    # Prefer center column for increased probablity of win based upon different score calculation
+    centerArray = [int(i) for i in list(game_board[ : , COLUMN_COUNT//2])]
     centerCount = centerArray.count(piece)
     score += centerCount*10
 
     if directions[0]:
-        # Horizontal score
-        for r in range(ROW_COUNT):
-            rowArray = [int(i) for i in list(board[r , : ])]
-            for c in range(COLUMN_COUNT - 3):
-                window = rowArray[c : c + WINDOW_LENGTH]
+        # Horizontal row score
+        for row in range(ROW_COUNT):
+            rowArray = [int(i) for i in list(game_board[row , : ])]
+            for col in range(COLUMN_COUNT - 3):
+                window = rowArray[col : col + WINDOW_LENGTH]
                 score += evaluate_window(window, piece)
 
     if directions[1]:
-        # Vertical score
-        for c in range(COLUMN_COUNT):
-            colArray = [int(i) for i in list(board[ : , c])]
-            for r in range(ROW_COUNT):
-                window = colArray[r : r + WINDOW_LENGTH]
+        # Vertical row score
+        for col in range(COLUMN_COUNT):
+            colArray = [int(i) for i in list(game_board[ : , col])]
+            for row in range(ROW_COUNT):
+                window = colArray[row : row + WINDOW_LENGTH]
                 score += evaluate_window(window, piece)
             
 
     if directions[2]:
         # Positive slope diagonal score
-        for r, c in itertools.product(range(ROW_COUNT - 3), range(COLUMN_COUNT - 3)):
-            window = [board[r + i][c + i] for i in range(WINDOW_LENGTH)]
+        for row, col in itertools.product(range(ROW_COUNT - 3), range(COLUMN_COUNT - 3)):
+            window = [game_board[row + i][col + i] for i in range(WINDOW_LENGTH)]
             score += evaluate_window(window, piece)
 
     if directions[3]:
         # Negative slope diagonal score
-        for r, c in itertools.product(range(ROW_COUNT - 3), range(COLUMN_COUNT - 3)):
-            window = [board[r + 3 - i][c + i] for i in range(WINDOW_LENGTH)]
+        for row, col in itertools.product(range(ROW_COUNT - 3), range(COLUMN_COUNT - 3)):
+            window = [game_board[row + 3 - i][col + i] for i in range(WINDOW_LENGTH)]
             score += evaluate_window(window, piece)
 
     return score
 
 # Picking best moves based on scores
-def pick_best_move(board, piece, directions=(1, 1, 1, 1)):
-    valid_locations = get_valid_locations(board)
+def pick_best_move(game_board, piece, directions=(1, 1, 1, 1)):
+    valid_locations = get_valid_locations(game_board)
 
     best_score = -10000
-    best_col = random.choice(valid_locations)
+    best_column = random.choice(valid_locations)
 
-    for c in valid_locations:
-        r = get_next_open_row(board, c)
-        temp_board = board.copy()
-        drop_piece(temp_board, r, c, piece)
-        score = score_position(temp_board, piece, directions)
+    for col in valid_locations:
+        row = find_next_available_row(game_board, col)
+        temp_game_board = game_board.copy()
+        drop_piece(temp_game_board, row, col, piece)
+        score = score_position(temp_game_board, piece, directions)
 
         if score > best_score:
             best_score = score
-            best_col = c
+            best_column = col
 
-    return best_col
+    return best_column
