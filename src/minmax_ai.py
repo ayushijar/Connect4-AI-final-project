@@ -22,7 +22,7 @@ def minimax(game_board, depth, alpha, beta, maximizing_player):
     global no_of_nodes_explored, pruned_nodes
     valid_locations = get_valid_locations(game_board)
 
-    if isTerminal := is_terminal_node(game_board):
+    if is_terminal_node(game_board):
         if check_game_over(game_board, AI_PIECE):
             return (None, math.inf)
         elif check_game_over(game_board, PLAYER_PIECE):
