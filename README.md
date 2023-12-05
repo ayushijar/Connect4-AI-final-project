@@ -2,7 +2,13 @@
 
 This game will be an interactive game between the human and the computer wherein the human can play his move and the 
 computer will predict its move based on the algorithm implemented and finally give us the result as to who won and
-who lost.
+who lost. 
+
+![Alt text](connect4-difficulty-levels.png)
+
+![Alt text](game-start.png)
+
+![Alt text](AI_wins.png)
 
 
 # INTRODUCTION :
