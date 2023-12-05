@@ -9,8 +9,8 @@ from variables import ROW_COUNT, COLUMN_COUNT, SQUARESIZE, RADIUS, colors, heigh
     PLAYER_PIECE, AI_PIECE,game_end_button_width, game_end_button_height
 from functions import create_connect4_board, check_valid_location, find_next_available_row, drop_piece, check_game_over, draw_connect4_board, \
     board, screen, draw_dotted_circle
-from score_ai import evaluate_current_score
-from minmax_ai import minimax
+from score_calculation_ai import evaluate_current_score
+from minmax_algo_ai import minimax
 from ui_components import Button
 
 class DifficultyLevel(Enum):

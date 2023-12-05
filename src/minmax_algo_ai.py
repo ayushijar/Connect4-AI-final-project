@@ -3,7 +3,7 @@ import random
 
 from variables import ROW_COUNT, COLUMN_COUNT, PLAYER_PIECE, AI_PIECE
 from functions import check_valid_location, check_game_over, find_next_available_row, drop_piece
-from score_ai import evaluate_current_score
+from score_calculation_ai import evaluate_current_score
 
 
 no_of_nodes_explored = 0
