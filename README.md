@@ -79,3 +79,8 @@ algorithm to determine the next best possible move.
 - The computer will choose the highest score value it finds while calculating and it will choose the corresponding column to play its
 next move.
 - For complete implementation of evaluation function, please refer to the file score_ai.py.
+
+# FINAL REPORT AND PRESENTATION :
+
+- [Connect4_AIvsHuman_FinalReport.docx] (https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/Connect4_AIvsHuman_FinalReport.docx) contains a detailed project report.
+- [Term Project Final Proposal_Team-35.pptx] (https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/Term%20Project%20Final%20Proposal_Team-35.pptx) powerpoint presentation for an overview of our project. 
