@@ -9,7 +9,7 @@ from variables import ROW_COUNT, COLUMN_COUNT, SQUARESIZE, RADIUS, colors, heigh
     PLAYER_PIECE, AI_PIECE,game_end_button_width, game_end_button_height
 from functions import create_connect4_board, check_valid_location, find_next_available_row, drop_piece, check_game_over, draw_connect4_board, \
     board, screen, draw_dotted_circle
-from score_ai import score_position
+from score_ai import evaluate_current_score
 from minmax_ai import minimax
 from ui_components import Button
 
@@ -80,8 +80,8 @@ class ConnectFour:
         if self.difficulty_level == DifficultyLevel.UNBEATABLE:
             col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 7, -math.inf, math.inf, True)
         print("\n")
-        print("No of explored nodes",no_of_nodes_explored)
-        print("No of pruned nodes", pruned_nodes)
+        print("Total no of explored nodes till this iteration",no_of_nodes_explored)
+        print("Total no of pruned nodes till this iteration", pruned_nodes)
         print("Column",col+1) 
         print("Winning factor for AI", minimaxScore)
         print("\n")
@@ -102,10 +102,10 @@ class ConnectFour:
     def display_winner(self,board, message):
         if message == "AI wins!! :[":
             print("AI wins!! :[")
-            print("AI Score:", score_position(board,AI_PIECE))
+            print("AI Score:", evaluate_current_score(board,AI_PIECE))
         elif message == "You win!! ^_^":
             print("You win!! ^_^")
-            print("Your Score:", score_position(board,PLAYER_PIECE))
+            print("Your Score:", evaluate_current_score(board,PLAYER_PIECE))
         label = self.myfont.render(message, 1, colors["DARKGREY"])
         screen.blit(label, (40, 10))
         pygame.display.update()

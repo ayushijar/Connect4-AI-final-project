@@ -46,7 +46,7 @@ Go to "game.py" file and click on the play button in the top right corner of vs 
 
 # HOW TO PLAY THE GAME?
 
-- This game is palyed in turns and first turn will be randomly allocated.
+- This game is played in turns and first turn will be randomly allocated.
 - If it is your turn, hover the mouse cursor over the column where you want to drop the piece and click mouse left button. 
   The piece will be placed in the bottommost row of that column.
 - Wait for AI to drop its piece.
@@ -69,7 +69,7 @@ Go to "game.py" file and click on the play button in the top right corner of vs 
 
 - We have implmented an evaluation function for depth limited minimax in order to calculate the score value which will be used by the 
 algorithm to determine the next best possible move.
-- The evaluation function (score_position) considers various patterns on the game board and assigns scores based on the presence of AI or player pieces.
+- The evaluation function (evaluate_current_score) considers various patterns on the game board and assigns scores based on the presence of AI or player pieces.
 - The computer will choose the highest score value it finds while calculating and it will choose the corresponding column to play its
 next move.
 - For complete implementation of evaluation function, please refer to the file score_ai.py.

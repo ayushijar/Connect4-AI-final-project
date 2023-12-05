@@ -5,7 +5,7 @@ from variables import ROW_COUNT, COLUMN_COUNT, PLAYER_PIECE, AI_PIECE, WINDOW_LE
 from functions import get_valid_locations, find_next_available_row, drop_piece
 
 # Evaluating scores of connections
-def evaluate_window(window, piece):
+def evaluation_screen(window, piece):
 
     score = 0
     opponent_piece = PLAYER_PIECE
@@ -27,7 +27,7 @@ def evaluate_window(window, piece):
     return score
 
 # Getting scores for connections
-def score_position(game_board, piece, directions=(1, 1, 1, 1)):
+def evaluate_current_score(game_board, piece, directions=(1, 1, 1, 1)):
 
     score = 0
 
@@ -42,7 +42,7 @@ def score_position(game_board, piece, directions=(1, 1, 1, 1)):
             rowArray = [int(i) for i in list(game_board[row , : ])]
             for col in range(COLUMN_COUNT - 3):
                 window = rowArray[col : col + WINDOW_LENGTH]
-                score += evaluate_window(window, piece)
+                score += evaluation_screen(window, piece)
 
     if directions[1]:
         # Vertical row score
@@ -50,20 +50,20 @@ def score_position(game_board, piece, directions=(1, 1, 1, 1)):
             colArray = [int(i) for i in list(game_board[ : , col])]
             for row in range(ROW_COUNT):
                 window = colArray[row : row + WINDOW_LENGTH]
-                score += evaluate_window(window, piece)
+                score += evaluation_screen(window, piece)
             
 
     if directions[2]:
         # Positive slope diagonal score
         for row, col in itertools.product(range(ROW_COUNT - 3), range(COLUMN_COUNT - 3)):
             window = [game_board[row + i][col + i] for i in range(WINDOW_LENGTH)]
-            score += evaluate_window(window, piece)
+            score += evaluation_screen(window, piece)
 
     if directions[3]:
         # Negative slope diagonal score
         for row, col in itertools.product(range(ROW_COUNT - 3), range(COLUMN_COUNT - 3)):
             window = [game_board[row + 3 - i][col + i] for i in range(WINDOW_LENGTH)]
-            score += evaluate_window(window, piece)
+            score += evaluation_screen(window, piece)
 
     return score
 
@@ -78,7 +78,7 @@ def pick_best_move(game_board, piece, directions=(1, 1, 1, 1)):
         row = find_next_available_row(game_board, col)
         temp_game_board = game_board.copy()
         drop_piece(temp_game_board, row, col, piece)
-        score = score_position(temp_game_board, piece, directions)
+        score = evaluate_current_score(temp_game_board, piece, directions)
 
         if score > best_score:
             best_score = score

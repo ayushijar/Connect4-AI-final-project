@@ -3,7 +3,7 @@ import random
 
 from variables import ROW_COUNT, COLUMN_COUNT, PLAYER_PIECE, AI_PIECE
 from functions import check_valid_location, check_game_over, find_next_available_row, drop_piece
-from score_ai import score_position
+from score_ai import evaluate_current_score
 
 
 no_of_nodes_explored = 0
@@ -30,7 +30,7 @@ def minimax(game_board, depth, alpha, beta, maximizing_player):
         else: 
             return (None, 0)
     elif depth == 0:
-        return (None, score_position(game_board, AI_PIECE))
+        return (None, evaluate_current_score(game_board, AI_PIECE))
 
     if maximizing_player:
         value = -math.inf
