@@ -70,15 +70,15 @@ class ConnectFour:
     #AI move
     def ai_move(self):
         if self.difficulty_level == DifficultyLevel.EASY:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 2, -math.inf, math.inf, True, 0, 0)
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 2, -math.inf, math.inf, True)
         if self.difficulty_level == DifficultyLevel.MEDIUM:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 3, -math.inf, math.inf, True, 0, 0)
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 3, -math.inf, math.inf, True)
         if self.difficulty_level == DifficultyLevel.DIFFICULT:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 4, -math.inf, math.inf, True, 0, 0)
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 4, -math.inf, math.inf, True)
         if self.difficulty_level == DifficultyLevel.CHALLENGING:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 6, -math.inf, math.inf, True, 0, 0)
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 6, -math.inf, math.inf, True)
         if self.difficulty_level == DifficultyLevel.UNBEATABLE:
-            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 7, -math.inf, math.inf, True, 0, 0)
+            col, minimaxScore, no_of_nodes_explored, pruned_nodes = minimax(self.gameBoard, 7, -math.inf, math.inf, True)
         print("\n")
         print("No of explored nodes",no_of_nodes_explored)
         print("No of pruned nodes", pruned_nodes)
