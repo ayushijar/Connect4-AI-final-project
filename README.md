@@ -25,8 +25,8 @@ who lost.
 - [variables.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/variables.py) contains all the GLOBAL variables for the project so that they are easy to find and change if ever needed. Helps in writing clean code.
 - [functions.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/functions.py) contains all the functions used in the game loop. This helps in bundling the functions together so that they are easy to find, edit and are easily accessible throughout the project. Keeps the main file clean as well.
 - [ui_components.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/ui_components.py) contains all the UI elements for the game. Helps in keeping UI methods and other methods separate.
-- [score_ai.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/score_ai.py) contains the functions for the score based AI version.
-- [minmax_ai.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/minmax_ai.py) contains the functions for the minmax algorithm for AI agent.
+- [score_calculation_ai.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/score_calculation_ai.py) contains the functions for the score based AI version.
+- [minmax_algo_ai.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/minmax_algo_ai.py) contains the functions for the minimax algorithm for AI agent.
 - [game.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/game.py) contains the game loop and executes the software.
 
 
