@@ -1,37 +1,75 @@
-# Connect four
-A game of connect four against AI.
+# CONNECT FOUR :
 
-![image](https://github.com/gdsc-ipsacademy/Connect-Four-Game/assets/81830617/9ffb20cd-9c8e-40fd-9fb6-8942ffdb02a1)
-
-
-![image](https://github.com/gdsc-ipsacademy/Connect-Four-Game/assets/81830617/469ed5b2-7d2f-4d5f-93b9-31bc19134d24)
+This game will be an interactive game between the human and the computer wherein the human can play his move and the 
+computer will predict its move based on the algorithm implemented and finally give us the result as to who won and
+who lost.
 
 
-# Directory structure
-- [variables.py](https://github.com/gdsc-ipsacademy/Connect-Four-Game/blob/main/src/variables.py) contains all the GLOBAL variables for the project so that they are easy to find and change if ever needed. Helps in writing clean code.
-- [functions.py](https://github.com/gdsc-ipsacademy/Connect-Four-Game/blob/main/src/functions.py) contains all the functions used in the game loop. This helps in bundling the functions together so that they are easy to find, edit and are easily accessible throughout the project. Keeps the main file clean as well.
-- [ui_components.py](https://github.com/gdsc-ipsacademy/Connect-Four-Game/blob/main/src/ui_components.py) conatins all the UI elements for the game. Helps in keeping UI methods and other methods separate.
-- [score_ai.py](https://github.com/gdsc-ipsacademy/Connect-Four-Game/blob/main/src/score_ai.py) contains the functions for the score based AI version.
-- [minmax_ai.py](https://github.com/gdsc-ipsacademy/Connect-Four-Game/blob/main/src/minmax_ai.py) contains the functions for the minmax algorithm based AI version.
-- [game.py](https://github.com/gdsc-ipsacademy/Connect-Four-Game/blob/main/src/game.py) contains the game loop and executes the software.
+# INTRODUCTION :
 
-# Version information
-- [v0.1.0](https://github.com/gdsc-ipsacademy/Connect-Four-Game/releases/tag/v0.1.0) contains the base game without AI. It just has human vs human mode where turns switch between both until the game is over.
-- [v1.0.1](https://github.com/gdsc-ipsacademy/Connect-Four-Game/releases/tag/v1.0.1) contains the game with an AI that uses scoring method to try and beat the human player. This version contains just human vs AI mode where turns switch between both until the game is over.
-- [v1.3.0](https://github.com/gdsc-ipsacademy/Connect-Four-Game/releases/tag/v1.3.0) contains the game with an AI that uses minmax algorithm with alpha-beta pruning, calculating upto depth 7, which makes it impossible to beat. This version contains just human vs AI mode where turns switch between both until the game is over. This version also includes sound effects for the game.
-- [v1.3.1](https://github.com/gdsc-ipsacademy/Connect-Four-Game/releases/tag/v1.3.1) contains the game with different difficulty levels from easy to god mode for the user to choose from at the start of the game. This version contains just human vs AI mode where turns switch between both until the game is over.
+- This is a Human vs AI connect4 game where you have to connect 4 discs either in a row, column or diagonal.
+- The game runs in 5 difficulty levels : 
+    (i) EASY
+    (ii) MEDIUM
+    (iii) DIFFICULT
+    (iv) CHALLENGING
+    (v) UNBEATABLE
+- Connect4 is implemented using minimax algorithm, alpha beta pruning and depth limited minimax for prediciting the next best 
+  possible move for AI agent.
+- AI piece is RED color.
+- Human player piece is YELLOW color.
 
-# How to run the game?
+
+# STRUCTURE OF THE CODE :
+
+- [variables.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/variables.py) contains all the GLOBAL variables for the project so that they are easy to find and change if ever needed. Helps in writing clean code.
+- [functions.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/functions.py) contains all the functions used in the game loop. This helps in bundling the functions together so that they are easy to find, edit and are easily accessible throughout the project. Keeps the main file clean as well.
+- [ui_components.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/ui_components.py) contains all the UI elements for the game. Helps in keeping UI methods and other methods separate.
+- [score_ai.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/score_ai.py) contains the functions for the score based AI version.
+- [minmax_ai.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/minmax_ai.py) contains the functions for the minmax algorithm for AI agent.
+- [game.py](https://github.com/ayushijar/Connect4-AI-final-project/blob/Project-setup/src/game.py) contains the game loop and executes the software.
+
+
+
+# HOW TO RUN THE GAME?
+
 1. Clone the repository to your machine following [how to clone a repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) documentation.
-2. Create a virtual environment by using the command `python<version> -m venv <virtual-environment-name>` in your terminal.
 
-(If you don't have venv installed, you can install it by running `pip install virtualenv` in your terminal.)
+2. Install the requirements by running `pip install -r requirements.txt`.
 
-3. Activate the virtual environment by running either `<virtual-environment-name>/Scripts/activate.bat` in CMD or `<virtual-environment-name>/Scripts/Activate.ps1` in PowerShell.
+3. Update the path in the terminal as `<directory path>\Connect4-AI-final-project\src` and run the project by executing the command     "python game.py" 
+            OR
+Go to "game.py" file and click on the play button in the top right corner of vs code.
 
-(To deactivate the virtual environment run the command `deactivate`.)
+4. You will be presented with a screen with 5 different difficulty level. Choose one level and play the game.
 
-4. Install the requirements in the virtual environment by running `pip install -r requirements.txt`.
-5. Run the game by running `python -u <directory path>\Connect-Four-Game\src\game.py`
 
-If you don't want to go through the hassle of creating a virtual environment, just run the commands in steps 4 and 5.
+# HOW TO PLAY THE GAME?
+
+- This game is palyed in turns and first turn will be randomly allocated.
+- If it is your turn, hover the mouse cursor over the column where you want to drop the piece and click mouse left button. 
+  The piece will be placed in the bottommost row of that column.
+- Wait for AI to drop its piece.
+- The goal is to stack 4 of their colored discs upwards, horizontally, or diagonally.
+- First one to achieve this wins the game.
+- If the board is filled without a winner, its a draw.
+
+
+# GAME MODES :
+
+1. EASY : In this mode difficulty level is set to the minimum, with the AI performing a search at a depth of 2.
+2. MEDIUM : In this mode difficulty level is a little more than EASY mode, with the AI performing a search at a depth of 3.
+3. DIFFICULT : In this mode AI performs a search at a depth of 4, providing a better user experience.
+4. CHALLENGING :  In this mode AI performs a search at a depth of 6, presenting a challenging game play against human 
+   player.
+5. UNBEATABLE :  This mode has highest level of difficulty where AI performs a search at depth 7, creates starategies against
+   human player and tries to win.
+
+# EVALUATION FUNCTION :
+
+- We have implmented an evaluation function for depth limited minimax in order to calculate the score value which will be used by the 
+algorithm to determine the next best possible move.
+- The evaluation function (score_position) considers various patterns on the game board and assigns scores based on the presence of AI or player pieces.
+- The computer will choose the highest score value it finds while calculating and it will choose the corresponding column to play its
+next move.
+- For complete implementation of evaluation function, please refer to the file score_ai.py.
